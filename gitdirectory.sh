@@ -26,8 +26,6 @@ do
     continue
   fi
 
-  echo $idx
-
   clear
   git checkout ${list[idx]} > /dev/null 2>&1 && tree -d
 done
