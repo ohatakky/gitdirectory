@@ -5,11 +5,13 @@ idx=0
 git checkout ${list[idx]} > /dev/null 2>&1 && tree -d
 while :
 do
-  read -p "h or l : " action
+  read -p "h or l or [0-9]+ : " action
   if [ "$action" = "h" ]; then
     idx=$(( idx - 1 ))
   elif [ "$action" = "l" ]; then
     idx=$(( idx + 1 ))
+  elif [[ "$action" =~ ^([0-9]+)$ ]]; then
+    idx=$(( idx + action ))
   else
     continue
   fi
@@ -23,6 +25,8 @@ do
     clear
     continue
   fi
+
+  echo $idx
 
   clear
   git checkout ${list[idx]} > /dev/null 2>&1 && tree -d
