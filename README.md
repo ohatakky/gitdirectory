@@ -1,5 +1,7 @@
 # gitdirectory
 
+git directory history
+
 ### demo
 
-![output](https://user-images.githubusercontent.com/40336622/89421446-04cb5e80-d76f-11ea-996b-c30d7d889799.gif)
+![output](https://user-images.githubusercontent.com/40336622/89439061-9c877780-d784-11ea-8ba2-27ae7b12625f.gif)

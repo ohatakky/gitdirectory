@@ -1,21 +1,33 @@
-spin()
-{
-    i=1
-    sp="/-\|"
-    while true
-    do
-        printf "\b${sp:i++%${#sp}:1}"
+
+BAR="#"
+MIN=1
+MAX=100
+progress_bar() {
+    TIMES=$1
+    COUNT=$2
+    PROGRESS=$(echo | awk -v t=$TIMES -v c=$COUNT -v max=$MAX '{ print int(c / t * max) }')
+    
+    PROGRESS_BAR=""
+    for _i in $(seq $MIN $PROGRESS); do PROGRESS_BAR="${PROGRESS_BAR}${BAR}"; done
+    
+    printf "\r[%-100s] %3d%%" $PROGRESS_BAR $PROGRESS
+}
+loading() {
+    for i in $(seq 1 10); do
+        progress_bar 10 $i
+        sleep 0.5
     done
 }
 
-spin &
-SPIN_PID=$!
-trap "kill -9 $SPIN_PID" `seq 0 15`  > /dev/null 2>&1
+loading &
+LOADING_PID=$!
+trap "kill -9 $LOADING_PID" `seq 0 15`  > /dev/null 2>&1
 
 repo=git@github.com:$1.git
 git clone --filter=blob:none --no-checkout $repo > /dev/null 2>&1 && cd "$(echo $1 | sed -e 's/.*\///g')"
 
-kill -9 $SPIN_PID > /dev/null 2>&1
+kill -9 $LOADING_PID > /dev/null 2>&1
+clear
 
 list=($(git log --reverse | grep -e '^commit' | awk '{print $2}'))
 prURL=https://github.com/$(git config --get remote.origin.url | sed -e 's/git@github.com://g' | sed -e 's/.git//g')/pulls?q=is%3Apr+hash%3A
