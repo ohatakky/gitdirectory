@@ -10,7 +10,7 @@ spin()
 
 spin &
 SPIN_PID=$!
-trap "kill -9 $SPIN_PID" `seq 0 15`
+trap "kill -9 $SPIN_PID" `seq 0 15`  > /dev/null 2>&1
 
 repo=git@github.com:$1.git
 git clone --filter=blob:none --no-checkout $repo > /dev/null 2>&1 && cd "$(echo $1 | sed -e 's/.*\///g')"
@@ -34,7 +34,7 @@ do
         elif [[ "$action" =~ ^-([0-9]+)$ ]]; then
         idx=$(( idx - ${action:1} ))
     else
-        continue
+        break
     fi
     
     if [ $(($idx)) -lt 0 ]; then
